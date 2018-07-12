@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zqkh.healthy.context.appservice.impl.domain.repository.query.TestResultQueryMapper">
+
+    <select id="getTestResultIdByTestPaperIdList" resultType="java.lang.String">
+    SELECT
+	  t.id
+    FROM
+	  t_test_result t
+    WHERE
+	  t.fk_test_paper_id IN
+	  <foreach collection="testPaperIdList" index="index" item="item" open="(" close=")" separator=",">
+          #{item}
+      </foreach>
+        and t.family_member_id=#{familyMemberId}
+    </select>
+
+
+    <select id="getTestResultIdByTestPaperId" resultType="java.lang.String">
+         SELECT
+	  t.id
+    FROM
+	  t_test_result t
+    WHERE
+	  t.fk_test_paper_id =#{testPaperId}
+	  and t.family_member_id=#{familyMemberId}
+    </select>
+
+
+    <select id="getTestResultIdByFamilyMemberId" resultType="java.lang.String">
+        SELECT
+	  t.id
+    FROM
+	  t_test_result t
+    WHERE
+	   t.family_member_id=#{familyMemberId}
+    </select>
+</mapper>

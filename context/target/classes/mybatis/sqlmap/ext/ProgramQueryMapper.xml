@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zqkh.healthy.context.appservice.impl.domain.repository.query.ProgramQueryMapper">
+
+    <select id="countByProgramTemplateId" resultType="java.lang.Long">
+        select count(t.id) from t_program t WHERE t.program_template_id=#{programTemplateId}
+    </select>
+
+
+    <select id="countNotEnd" resultType="java.lang.Long">
+         select count(t.id) from t_program t WHERE t.program_template_id=#{programTemplateId} and t.`status` !='END'
+    </select>
+
+    <select id="getIdBySrcTypeAndSrc" resultType="java.lang.String">
+        select t.`id` from t_program t where t.source_type=#{srcType} and t.src=#{src}
+        <if test="srcDesc !=null and srcDesc !=''">
+            and t.`src_desc`=#{srcDesc}
+        </if>
+        <if test="status !=null and status.size &gt;0">
+            and t.`status` in
+              <foreach collection="status" item="item" separator="," index="index" close=")" open="(">
+                  #{item}
+              </foreach>
+        </if>
+    </select>
+
+
+    <select id="getIdByDayDoneAndFamilyMemberId" resultType="java.lang.String">
+        select t.program_id from t_program_task	t where DATE_FORMAT(t.launch_time,'%Y-%d-%m')=DATE_FORMAT(now(),'%Y-%d-%m')
+        and t.family_member_id=#{familyMemberId} and t.done=#{dayDone};
+    </select>
+
+
+    <select id="search" resultType="java.lang.String">
+SELECT
+	t.id
+FROM
+	t_program t
+    <if test="key !=null and key !=''">
+        LEFT JOIN t_program_template t1 ON t1.id = t.program_template_id
+    </if>
+WHERE
+	t.family_member_id = #{familyMemberId}
+	<if test="key !=null and key !=''">
+        AND t1.`name` like CONCAT('%',#{key},'%')
+    </if>
+    <if test="done !=null and done == true">
+        AND t.`status` = 'END';
+    </if>
+    <if test="srcType !=null">
+        and t.`source_type`=#{srcType}
+    </if>
+    <if test="src !=null and src !=''">
+        and t.`src`=#{src}
+    </if>
+    <if test="ids !=null and ids.size &gt;0">
+        t.`id` in
+        <foreach collection="ids" open="(" close=")" index="index" separator="," item="item">
+            ${item}
+        </foreach>
+    </if>
+    </select>
+</mapper>

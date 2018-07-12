@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zqkh.healthy.context.appservice.impl.domain.repository.query.TestPaperTypeTemplateQueryMapper">
+
+
+    <select id="search" resultType="java.lang.String">
+        select t.`id` from t_test_paper_type_template  t
+    </select>
+
+    <select id="validationName" resultType="java.lang.Boolean">
+        select case when
+        (select t.`id` from t_test_paper_type_template t WHERE t.`name`=#{name}
+        <if test="id !=null and id !=''">
+            and t.id !=#{id}
+        </if>
+        ) is null then true else false end
+    </select>
+
+    <select id="allList" resultType="java.lang.String">
+          select t.`id` from t_test_paper_type_template  t
+    </select>
+
+</mapper>

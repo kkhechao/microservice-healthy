@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zqkh.healthy.context.appservice.impl.domain.repository.query.ProgramFeedbackButtonQueryMapper">
+
+    <select id="search" resultType="java.lang.String">
+        select t.id from t_program_feedback_button t
+        <where>
+            <if test="type !=null">
+                t.`type`=#{type}
+            </if>
+        </where>
+    </select>
+
+
+    <select id="validateName" resultType="java.lang.Boolean">
+        select case when (select t.id from t_program_feedback_button t where t.`name`=#{name}
+        <if test="id !=null and id !=''">
+            and t.`id` !=#{id}
+        </if>
+        ) is null then true else false end
+    </select>
+
+
+    <select id="appButtonList" resultType="java.lang.String">
+         select t.`id` from  (select * from t_program_feedback_button order by rand() ) t  group by t.`type`
+    </select>
+
+</mapper>

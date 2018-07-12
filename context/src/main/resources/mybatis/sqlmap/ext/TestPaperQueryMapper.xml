@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zqkh.healthy.context.appservice.impl.domain.repository.query.TestPaperQueryMapper">
+
+    <select id="search" resultType="java.lang.String">
+    SELECT
+        t.id
+    FROM
+        t_test_paper t
+        <where>
+            <if test="title !=null and title !=''">
+                t.title LIKE concat(concat('%',#{title}),'%')
+            </if>
+            <if test="release !=null">
+                and t.`release` =#{release}
+            </if>
+            <if test="type !=null and type !=''">
+                and t.type=#{type}
+            </if>
+        </where>
+    </select>
+
+    <select id="searchContainsTitle" resultType="java.lang.String">
+        SELECT
+        t.id
+        FROM
+        t_test_paper t
+        WHERE
+             t.title LIKE concat(concat('%',#{title}),'%')
+        <if test="release !=null">
+              and t.`release` =#{release}
+        </if>
+        <if test="type !=null">
+              and t.type=#{type}
+        </if>
+    </select>
+
+    <select id="allTestPaperByType" resultType="java.lang.String">
+        SELECT
+        t.id
+        FROM
+        t_test_paper t
+        <where>
+            <if test="release !=null">
+                t.`release` =#{release}
+            </if>
+            <if test="type !=null">
+                and t.type=#{type}
+            </if>
+        </where>
+    </select>
+</mapper>

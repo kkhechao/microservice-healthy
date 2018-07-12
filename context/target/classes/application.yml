@@ -1,0 +1,8 @@
+server:
+  port: 7081
+spring:
+  application:
+    name: microservice-healthy-context
+  profiles:
+    active: dev
+    include: "base"

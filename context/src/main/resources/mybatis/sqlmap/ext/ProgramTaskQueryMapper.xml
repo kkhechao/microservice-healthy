@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zqkh.healthy.context.appservice.impl.domain.repository.query.ProgramTaskQueryMapper">
+
+
+    <select id="getIdByProgramId" resultType="java.lang.String">
+          select t.`id` from t_program_task t where t.program_id=#{programId}
+    </select>
+
+
+    <select id="insistDay" resultType="java.lang.Long">
+          select count(a.b) from (SELECT DATE_FORMAT(t.`launch_time`,"%Y-%m-%d") as b FROM t_program_task t where t.program_id=#{programId} and t.done=true and  DATE_FORMAT(t.`launch_time`,"%Y-%m-%d") != DATE_FORMAT(now(),"%Y-%m-%d") GROUP BY DATE_FORMAT(t.`launch_time`,"%Y-%m-%d"))a
+    </select>
+
+
+    <select id="finishTaskNum" resultType="java.lang.Long">
+         SELECT count(t.id) FROM t_program_task t where t.program_id=#{programId} and t.done=true
+    </select>
+
+</mapper>
